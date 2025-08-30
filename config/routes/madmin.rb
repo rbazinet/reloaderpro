@@ -1,4 +1,8 @@
 namespace :madmin, path: :admin do
+  resources :powders
+  resources :bullets
+  resources :cartridges
+  resources :cartridge_types
   resources :reloading_data_sources
   resources :manufacturers
   resources :manufacturer_types
