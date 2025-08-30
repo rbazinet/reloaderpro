@@ -1,4 +1,6 @@
 namespace :madmin, path: :admin do
+  resources :manufacturers
+  resources :manufacturer_types
   if defined?(Sidekiq)
     require "sidekiq/web"
     mount Sidekiq::Web => "/sidekiq"

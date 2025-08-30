@@ -118,6 +118,49 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_192532) do
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
+  create_table "bullet_weights", force: :cascade do |t|
+    t.float "weight"
+    t.bigint "cartridge_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cartridge_id"], name: "index_bullet_weights_on_cartridge_id"
+  end
+
+  create_table "bullets", force: :cascade do |t|
+    t.string "name"
+    t.decimal "weight"
+    t.decimal "length"
+    t.decimal "sd"
+    t.decimal "bc"
+    t.bigint "manufacturer_id", null: false
+    t.bigint "caliber_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["caliber_id"], name: "index_bullets_on_caliber_id"
+    t.index ["manufacturer_id"], name: "index_bullets_on_manufacturer_id"
+  end
+
+  create_table "calibers", force: :cascade do |t|
+    t.string "name"
+    t.decimal "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cartridge_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cartridges", force: :cascade do |t|
+    t.string "name"
+    t.bigint "cartridge_type_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cartridge_type_id"], name: "index_cartridges_on_cartridge_type_id"
+  end
+
   create_table "connected_accounts", force: :cascade do |t|
     t.bigint "owner_id"
     t.string "provider"
@@ -133,11 +176,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_192532) do
     t.index ["owner_id", "owner_type"], name: "index_connected_accounts_on_owner_id_and_owner_type"
   end
 
+  create_table "firearm_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "inbound_webhooks", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "manufacturer_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "manufacturers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "manufacturer_type_id"
   end
 
   create_table "noticed_events", force: :cascade do |t|
@@ -312,6 +374,62 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_192532) do
     t.string "contact_url"
   end
 
+  create_table "powders", force: :cascade do |t|
+    t.string "name"
+    t.integer "manufacturer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "primer_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "primers", force: :cascade do |t|
+    t.string "name"
+    t.integer "manufacturer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reloading_data_sources", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reloading_sessions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "cartridge_id", null: false
+    t.datetime "loaded_at"
+    t.bigint "reloading_data_source_id", null: false
+    t.bigint "bullet_id", null: false
+    t.string "bullet_type"
+    t.bigint "bullet_weight_id", null: false
+    t.decimal "bullet_weight_other"
+    t.bigint "powder_id", null: false
+    t.decimal "powder_weight"
+    t.bigint "primer_id", null: false
+    t.bigint "primer_type_id", null: false
+    t.decimal "cartridge_overall_length"
+    t.integer "quantity"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "cartridge_type_id", null: false
+    t.index ["account_id"], name: "index_reloading_sessions_on_account_id"
+    t.index ["bullet_id"], name: "index_reloading_sessions_on_bullet_id"
+    t.index ["bullet_weight_id"], name: "index_reloading_sessions_on_bullet_weight_id"
+    t.index ["cartridge_id"], name: "index_reloading_sessions_on_cartridge_id"
+    t.index ["cartridge_type_id"], name: "index_reloading_sessions_on_cartridge_type_id"
+    t.index ["powder_id"], name: "index_reloading_sessions_on_powder_id"
+    t.index ["primer_id"], name: "index_reloading_sessions_on_primer_id"
+    t.index ["primer_type_id"], name: "index_reloading_sessions_on_primer_type_id"
+    t.index ["reloading_data_source_id"], name: "index_reloading_sessions_on_reloading_data_source_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -361,7 +479,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_192532) do
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_tokens", "users"
+  add_foreign_key "bullet_weights", "cartridges"
+  add_foreign_key "bullets", "calibers"
+  add_foreign_key "bullets", "manufacturers"
+  add_foreign_key "cartridges", "cartridge_types"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
+  add_foreign_key "reloading_sessions", "accounts"
+  add_foreign_key "reloading_sessions", "bullet_weights"
+  add_foreign_key "reloading_sessions", "bullets"
+  add_foreign_key "reloading_sessions", "cartridge_types"
+  add_foreign_key "reloading_sessions", "cartridges"
+  add_foreign_key "reloading_sessions", "powders"
+  add_foreign_key "reloading_sessions", "primer_types"
+  add_foreign_key "reloading_sessions", "primers"
+  add_foreign_key "reloading_sessions", "reloading_data_sources"
 end
