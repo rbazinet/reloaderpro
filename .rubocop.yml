@@ -940,7 +940,7 @@ Naming/MethodName:
 Naming/MethodParameterName:
   Enabled: false
 
-Naming/PredicatePrefix:
+Naming/PredicateName:
   Enabled: false
 
 Naming/RescuedExceptionsVariableName:
