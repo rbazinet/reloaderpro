@@ -1,13 +1,13 @@
 namespace :rp_old do
-  desc 'Import bullet data from Shootforum'
+  desc "Import bullet data from Shootforum"
   task bullet_import: :environment do
     mechanize = Mechanize.new
 
-    manufacturer_type = ManufacturerType.find_or_create_by(name: 'Bullet')
+    manufacturer_type = ManufacturerType.find_or_create_by(name: "Bullet")
 
-    page = mechanize.get('http://www.shootforum.com/bulletdb/bullets.php')
+    page = mechanize.get("http://www.shootforum.com/bulletdb/bullets.php")
     form = page.form
-    select_list = form.field_with(name: 'cal')
+    select_list = form.field_with(name: "cal")
 
     # this will iterate over all of the bullet diameters
     select_list.options.each do |option|
@@ -32,10 +32,10 @@ namespace :rp_old do
       # (Element:0x26908 { name = "td", children = [ #(Text "0")] }),
       # (Element:0x26ae8 { name = "td", children = [ #(Text "0")] })]
 
-      page.search('tr').each do |row|
+      page.search("tr").each do |row|
         if row_count.positive?
           row_data = []
-          row.search('td').each do |col|
+          row.search("td").each do |col|
             row_data << col.text
           end
 
@@ -43,8 +43,8 @@ namespace :rp_old do
           manufacturer = Manufacturer.find_or_create_by(name: row_data[1], manufacturer_type_id: manufacturer_type.id)
 
           Bullet.find_or_create_by(name: row_data[2], caliber:, manufacturer:,
-                                   weight: row_data[3].to_f, bc: row_data[7].to_f, sd: row_data[6].to_f,
-                                   length: row_data[5].to_f)
+            weight: row_data[3].to_f, bc: row_data[7].to_f, sd: row_data[6].to_f,
+            length: row_data[5].to_f)
         end
 
         row_count += 1

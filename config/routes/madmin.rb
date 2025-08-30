@@ -1,4 +1,5 @@
 namespace :madmin, path: :admin do
+  resources :reloading_data_sources
   resources :manufacturers
   resources :manufacturer_types
   if defined?(Sidekiq)

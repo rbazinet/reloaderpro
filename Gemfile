@@ -82,3 +82,5 @@ eval_gemfile "Gemfile.jumpstart"
 # gem "strong_migrations"
 
 gem "mechanize", "~> 2.14"
+
+gem "standard", ">= 1.35.1"
