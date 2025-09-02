@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-ReloaderPro is an ammunition reloading management application built on Jumpstart Pro Rails (commercial SaaS starter). It tracks bullets, powders, primers, cartridges, and complete reloading sessions with detailed recipe data. Built with Rails 8.0 and modern Rails patterns for multi-tenant SaaS applications.
+HandloaderPro is an ammunition reloading management application built on Jumpstart Pro Rails (commercial SaaS starter). It tracks bullets, powders, primers, cartridges, and complete reloading sessions with detailed recipe data. Built with Rails 8.0 and modern Rails patterns for multi-tenant SaaS applications.
 
 ## Development Commands
 
@@ -111,7 +111,7 @@ end
 ## Technology Stack
 
 - **Rails 8.0** with modern conventions (positional enum arguments, etc.)
-- **Ruby 3.4.5**
+- **Ruby 3.2+** (see `.ruby-version` for exact version)
 - **PostgreSQL** (primary), **SolidQueue** (jobs), **SolidCache** (cache), **SolidCable** (websockets)
 - **Hotwire** (Turbo + Stimulus) for frontend interactivity
 - **Import Maps** for JavaScript (no Node.js/npm dependency)

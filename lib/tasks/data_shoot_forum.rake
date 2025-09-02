@@ -1,4 +1,4 @@
-namespace :reloaderpro do
+namespace :handloaderpro do
   desc "Import bullet data from Shootforum"
   task bullet_import: :environment do
     require "mechanize"

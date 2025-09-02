@@ -1,4 +1,4 @@
-namespace :reloaderpro do
+namespace :handloaderpro do
   desc "Import bullet data from JBM Ballistics"
   task bullet_data: :environment do
     require "mechanize"
