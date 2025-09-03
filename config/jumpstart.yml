@@ -13,6 +13,7 @@ account_types: both
 apns: false
 fcm: false
 integrations:
+- honeybadger
 omniauth_providers:
 payment_processors:
 multitenancy:
