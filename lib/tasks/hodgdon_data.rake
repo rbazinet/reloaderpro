@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require "selenium-webdriver"
-require "nokogiri"
-
 namespace :hodgdon do
   desc "Import data from Hodgdon reloading website"
   task data: :environment do
+    require "selenium-webdriver"
+    require "nokogiri"
     puts "Starting Hodgdon data import..."
 
     # Setup Selenium WebDriver
