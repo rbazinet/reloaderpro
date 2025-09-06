@@ -128,6 +128,7 @@ production:
     database: handloaderpro_production
     username: handloaderpro
     password: <%= ENV["POSTGRES_PASSWORD"] %>
+    url: <%= ENV["DATABASE_URL"] %>
     # Or set DATABASE_URL to override
 
   cache:
